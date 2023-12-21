@@ -1,0 +1,2 @@
+# google_gemini_simple_sample
+まだまだ Google のライブラリの層で日本語とかだとエラーをあっけなく吐いてしまう
