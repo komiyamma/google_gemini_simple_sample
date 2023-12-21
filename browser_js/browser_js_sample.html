@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+  </head>
+  <body>
+    <!-- ... Your HTML and CSS -->
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+    <script type="module">
+      import { GoogleGenerativeAI } from "@google/generative-ai";
+
+let API_KEY = "*******************************************************";
+// Access your API key (see "Set up your API key" above)
+const genAI = new GoogleGenerativeAI(API_KEY);
+
+async function run() {
+  // For text-only input, use the gemini-pro model
+  const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+
+  const chat = model.startChat({
+    history: [
+      {
+        role: "user",
+        parts: "信長の野望・天翔記と、信長の野望・将星録ではとちらが発売が先ですか？",
+      },
+      {
+        role: "model",
+        parts: "こんにちわ。もう一度お願いします",
+      },
+    ],
+    generationConfig: {
+      maxOutputTokens: 100,
+    },
+  });
+  
+  const msg = "天翔記と将星録ではとちらが発売が先ですか？";
+
+  const result = await model.generateContentStream(msg);
+let text = '';
+for await (const chunk of result.stream) {
+  const chunkText = chunk.text();
+  console.log(chunkText);
+  text += chunkText;
+}
+}
+
+run();    </script>
+  </body>
+</html>
